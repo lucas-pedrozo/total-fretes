@@ -1,0 +1,37 @@
+services:
+  backEnd-database:
+    image: mysql:8.0
+    container_name: mysql-backend
+    restart: always
+    env_file:
+      - ./.env
+    volumes:  
+      - backEnd_db_data:/var/lib/mysql
+    networks: [app-network]
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+    ports:
+      - "3306:3306"
+
+  backend:
+    build: ./backEnd
+    container_name: backend
+    restart: always
+    env_file:
+      - ./backEnd/.env
+    volumes:
+      - ./uploads:/app/uploads
+    depends_on:
+      backEnd-database:
+        condition: service_healthy
+    networks: [app-network]
+
+volumes:
+  backEnd_db_data:
+
+networks:
+  app-network:
+    driver: bridge

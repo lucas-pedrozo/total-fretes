@@ -42,7 +42,7 @@ Carga.init({
     },
     tipoCarga_id: {
         type: DataTypes.INTEGER,
-        allowNull: true,
+        allowNull: false,
     },
 }, {
     sequelize,

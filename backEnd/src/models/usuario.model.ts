@@ -4,87 +4,92 @@ import ImagemUsuario from './imagem_usuario.model';
 import bcrypt from "bcrypt";
 
 class Usuario extends Model {
-    id_usuario: number | undefined;
-    senha: string | undefined;
-    nome: string | undefined;
-    email: string | undefined;
-    cpf: string | undefined;
-    cnpj: string | undefined;
-    cnh: string | undefined;
-    acesso: string | undefined;
-    datanascimento?: Date | undefined;
-    imagemUsuario_id?: number | undefined;
+	id_usuario: number | undefined;
+	senha: string | undefined;
+	nome: string | undefined;
+	email: string | undefined;
+	cpf: string | undefined;
+	cnpj: string | undefined;
+	cnh: string | undefined;
+	acesso: string | undefined;
+	datanascimento?: Date | undefined;
+	imagemUsuario_id?: number | undefined;
 
-    public async hashPassword() {
-        this.senha = await bcrypt.hash(this.senha!, 10);
-    }
-    public async validatePassword(password: string): Promise<boolean> {
-        return await bcrypt.compare(password, this.senha!);
-    }
+	public async hashPassword() {
+		this.senha = await bcrypt.hash(this.senha!, 10);
+	}
+	public async validatePassword(password: string): Promise<boolean> {
+		return await bcrypt.compare(password, this.senha!);
+	}
 }
 
 Usuario.init({
-    id_usuario: {
-        type: DataTypes.INTEGER,
-        autoIncrement: true,
-        primaryKey: true,
-    },
-    senha: {
-        type: DataTypes.STRING,
-        allowNull: false,
-    },
-    nome: {
-        type: DataTypes.STRING,
-        allowNull: false,
-    },
-    email: {
-        type: DataTypes.STRING,
-        allowNull: false,
-    },
-    cpf: {
-        type: DataTypes.STRING,
-        allowNull: false,
-    },
-    cnpj: {
-        type: DataTypes.STRING,
-        allowNull: true,
-    },
-    cnh: {
-        type: DataTypes.STRING,
-        allowNull: false,
-    },
-    datanascimento: {
-        type: DataTypes.DATE,
-        allowNull: false,
-    },
-    imagemUsuario_id: {
-        type: DataTypes.INTEGER,
-        allowNull: true,
-    },
-    acesso: {
-        type: DataTypes.STRING,
-        allowNull: false,
-        defaultValue: "usuario",
-        validate: {
-            isIn: [['usuario', 'admin', 'empresa']],
-        },
-    },
+	id_usuario: {
+		type: DataTypes.INTEGER,
+		autoIncrement: true,
+		allowNull: false,
+		primaryKey: true,
+	},
+	senha: {
+		type: DataTypes.STRING,
+		allowNull: false,
+	},
+	nome: {
+		type: DataTypes.STRING,
+		allowNull: false,
+	},
+	email: {
+		type: DataTypes.STRING,
+		allowNull: false,
+	},
+	cpf: {
+		type: DataTypes.STRING,
+		allowNull: false,
+	},
+	cnpj: {
+		type: DataTypes.STRING,
+		allowNull: true,
+	},
+	cnh: {
+		type: DataTypes.STRING,
+		allowNull: false,
+	},
+	datanascimento: {
+		type: DataTypes.DATE,
+		allowNull: false,
+	},
+	imagemUsuario_id: {
+		type: DataTypes.INTEGER,
+		allowNull: true,
+	},
+	acesso: {
+		type: DataTypes.STRING,
+		allowNull: false,
+		defaultValue: "usuario",
+		validate: {
+			isIn: [[
+				'usuario',
+				'admin',
+				'empresa'
+			]],
+		},
+	},
 }, {
-    sequelize,
-    tableName: 'USUARIO',
-    timestamps: false,
+	sequelize,
+	tableName: 'USUARIO',
+	timestamps: false,
 });
 
 Usuario.belongsTo(ImagemUsuario, { foreignKey: 'imagemUsuario_id', as: 'imagemUsuario' });
 
 Usuario.beforeCreate(async (user: Usuario) => {
-    await user.hashPassword();
+	await user.hashPassword();
 });
 
 Usuario.beforeUpdate(async (user: Usuario) => {
-    if (user.changed("senha")) {
-        await user.hashPassword();
-    }
+	if (user.changed("senha")) {
+		await user.hashPassword();
+	}
 });
 
 export default Usuario;

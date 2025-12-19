@@ -2,7 +2,15 @@ import express from 'express'
 import { login } from '../controllers/login.controller'
 
 const router = express.Router();
-router.post('/login', login)
-router.get('/login', login)
+
+router.post(
+  '/login',
+  login
+);
+
+router.get(
+  '/login',
+  login
+)
 
 export default router;

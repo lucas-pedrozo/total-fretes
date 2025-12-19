@@ -24,6 +24,7 @@ Frete.init({
     id_frete: {
         type: DataTypes.INTEGER,
         autoIncrement: true,
+        allowNull: false,
         primaryKey: true,
     },
     data_criacao: {
@@ -33,31 +34,31 @@ Frete.init({
     },
     saida: {
         type: DataTypes.STRING,
-        allowNull: true,
+        allowNull: false,
     },
     destino: {
         type: DataTypes.STRING,
-        allowNull: true,
+        allowNull: false,
     },
     valor_frete: {
         type: DataTypes.INTEGER,
-        allowNull: true,
+        allowNull: false,
     },
     prazo: {
         type: DataTypes.INTEGER,
-        allowNull: true,
+        allowNull: false,
     },
     data_saida: {
         type: DataTypes.DATE,
-        allowNull: true,
+        allowNull: false,
     },
     data_chegada: {
         type: DataTypes.DATE,
-        allowNull: true,
+        allowNull: false,
     },
     status_id: {
         type: DataTypes.INTEGER,
-        allowNull: true,
+        allowNull: false,
     },
     caminhoneiro_id: {
         type: DataTypes.INTEGER,
@@ -65,11 +66,11 @@ Frete.init({
     },
     carga_id: {
         type: DataTypes.INTEGER,
-        allowNull: true,
+        allowNull: false,
     },
     empresa_id: {
         type: DataTypes.INTEGER,
-        allowNull: true,
+        allowNull: false,
     },
 }, {
     sequelize,

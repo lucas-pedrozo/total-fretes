@@ -62,7 +62,6 @@ export const authorizeRoles = (...allowedRoles: Role[]) => {
 
     const { acesso } = req.user;
 
-    // admin sempre pode tudo (se você quiser essa regra)
     if (acesso === 'admin') {
       return next();
     }
@@ -84,12 +83,10 @@ export const allowOwnerOrRoles = (...allowedRoles: Role[]) => {
     const { id, acesso } = req.user;
     const paramId = Number(req.params.id);
 
-    // se for admin ou empresa (ou outros papéis permitidos), passa
     if (allowedRoles.includes(acesso) || acesso === 'admin') {
       return next();
     }
 
-    // se for usuario comum, só pode mexer no próprio id
     if (acesso === 'usuario' && id === paramId) {
       return next();
     }
